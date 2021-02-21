@@ -3,6 +3,8 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
+    id("com.squareup.sqldelight")
+    id("kotlinx-serialization")
 }
 
 kotlin {
@@ -15,7 +17,21 @@ kotlin {
         }
     }
     sourceSets {
-        val commonMain by getting
+        val commonMain by getting {
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutines}") {
+                    version {
+                        strictly(Versions.kotlinCoroutines)
+                    }
+                }
+                implementation(Serialization.core)
+                implementation(SqlDelight.runtime)
+                implementation(Ktor.core)
+                implementation(Ktor.json)
+                implementation(Ktor.clientLogging)
+                implementation(Ktor.clientSerialization)
+            }
+        }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test-common"))
@@ -24,6 +40,7 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
+                implementation(Ktor.android)
                 implementation("com.google.android.material:material:1.2.1")
             }
         }
