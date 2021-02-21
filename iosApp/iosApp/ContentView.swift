@@ -6,10 +6,15 @@ struct ContentView: View {
     @EnvironmentObject var viewmodel: PlaylistViewModel
     
     var body: some View {
-        List {
-            ForEach(viewmodel.contents) { content in
-                ContentRowView(content: content)
+        NavigationView {
+            List {
+                ForEach(viewmodel.contents) { content in
+                    NavigationLink(destination: ContentDetailView(content: content)) {
+                            ContentRowView(content: content)
+                        }
+                }
             }
+            .navigationTitle("Video Playlist")
         }
     }
 }

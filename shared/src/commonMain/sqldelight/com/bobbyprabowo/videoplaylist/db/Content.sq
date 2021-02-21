@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS Content(
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     title TEXT,
     presenterName TEXT,
-    description TEXT,
+    contentDescription TEXT,
     thumbnailUrl TEXT,
     videoUrl TEXT,
     videoDuration INTEGER
@@ -16,4 +16,4 @@ deleteAllContents:
 DELETE FROM Content;
 
 insertContent:
-INSERT OR REPLACE INTO Content(title, presenterName, description, thumbnailUrl, videoUrl, videoDuration) VALUES ?;
+INSERT OR REPLACE INTO Content(title, presenterName, contentDescription, thumbnailUrl, videoUrl, videoDuration) VALUES ?;

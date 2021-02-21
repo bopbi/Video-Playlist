@@ -10,7 +10,7 @@ data class Content(
     @SerialName("presenter_name")
     val presenterName: String,
     @SerialName("description")
-    val description: String,
+    val contentDescription: String,
     @SerialName("thumbnail_url")
     val thumbnailUrl: String,
     @SerialName("video_url")
@@ -25,7 +25,7 @@ data class Content(
             return Content(
                 title = content.title ?: "",
                 presenterName = content.presenterName ?: "",
-                description = content.description ?: "",
+                contentDescription = content.contentDescription ?: "",
                 thumbnailUrl = content.thumbnailUrl ?: "",
                 videoUrl = content.videoUrl ?: "",
                 videoDuration = content.videoDuration?.toInt() ?: 0
@@ -44,7 +44,7 @@ data class Content(
             id = 0,
             title = title,
             presenterName = presenterName,
-            description = description,
+            contentDescription = contentDescription,
             thumbnailUrl = thumbnailUrl,
             videoUrl = videoUrl,
             videoDuration = videoDuration.toLong()
