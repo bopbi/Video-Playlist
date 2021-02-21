@@ -9,26 +9,32 @@
 import Foundation
 import shared
 
-final class PlaylistViewModel: ObservableObject, FetchPlaylistResultListener {
+final class PlaylistViewModel: ObservableObject, UseCaseSuccessListener, UseCaseFailureListener {
     
     @Published var contents: [Content] = Array()
+    var fetchPlaylist: InitialFetchPlaylist?
     
-    func onFailed(throwable: KotlinThrowable) {
-        
+    func onSuccess(tag: String, result: Any?) {
+        if (result is [Content]) {
+            self.contents = result as! [Content]
+        }
     }
     
-    func onSuccess(playlist: [Content]) {
-        contents = playlist
+    func onError(tag: String, throwable: KotlinThrowable) {
+        
     }
     
     init() {
         let videoAPi = VideoApi()
         let database = Platform.init().database
-        
         let repository = ContentRepositoryImpl(videoApi: videoAPi, database: database)
-        let fetchPlaylist = InitialFetchPlaylistImpl(contentRepository: repository)
-        fetchPlaylist.execute(resultListener:self)
+        self.fetchPlaylist = InitialFetchPlaylistImpl(contentRepository: repository, successListener: self, failureListener: self)
     }
+    
+    func performFetch() {
+        self.fetchPlaylist?.executeCallback(processTag: "PlayListFetch")
+    }
+    
 }
 
 extension Content : Identifiable { }
