@@ -8,16 +8,17 @@
 
 import SwiftUI
 import shared
+import AVKit
 
 struct ContentDetailView: View {
     
     let content: Content
     
     var body: some View {
-        VStack {
-            Text(content.title)
+        NavigationView {
+            VideoPlayer(player: AVPlayer(url:  URL(string: content.videoUrl)!))
+                .navigationTitle(content.title)
         }
-        
     }
 }
 
