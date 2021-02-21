@@ -17,4 +17,37 @@ data class Content(
     val videoUrl: String,
     @SerialName("video_duration")
     val videoDuration: Int
-)
+) {
+
+    companion object {
+
+        private fun fromEntity(content: com.bobbyprabowo.videoplaylist.db.Content): Content {
+            return Content(
+                title = content.title ?: "",
+                presenterName = content.presenterName ?: "",
+                description = content.description ?: "",
+                thumbnailUrl = content.thumbnailUrl ?: "",
+                videoUrl = content.videoUrl ?: "",
+                videoDuration = content.videoDuration?.toInt() ?: 0
+            )
+        }
+
+        fun fromEntities(contents: List<com.bobbyprabowo.videoplaylist.db.Content>): List<Content> {
+            return contents.map {
+                fromEntity(it)
+            }
+        }
+    }
+
+    fun toEntity(): com.bobbyprabowo.videoplaylist.db.Content {
+        return com.bobbyprabowo.videoplaylist.db.Content(
+            id = 0,
+            title = title,
+            presenterName = presenterName,
+            description = description,
+            thumbnailUrl = thumbnailUrl,
+            videoUrl = videoUrl,
+            videoDuration = videoDuration.toLong()
+        )
+    }
+}

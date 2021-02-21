@@ -1,0 +1,19 @@
+
+CREATE TABLE IF NOT EXISTS Content(
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    title TEXT,
+    presenterName TEXT,
+    description TEXT,
+    thumbnailUrl TEXT,
+    videoUrl TEXT,
+    videoDuration INTEGER
+);
+
+getContents:
+SELECT * FROM Content;
+
+deleteAllContents:
+DELETE FROM Content;
+
+insertContent:
+INSERT OR REPLACE INTO Content(title, presenterName, description, thumbnailUrl, videoUrl, videoDuration) VALUES ?;

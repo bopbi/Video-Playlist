@@ -1,5 +1,9 @@
 package com.bobbyprabowo.videoplaylist.shared
 
-expect class Platform() {
+import com.bobbyprabowo.videoplaylist.db.VideoPlaylistDatabase
+
+expect class Platform {
     val platform: String
+
+    val database: VideoPlaylistDatabase
 }

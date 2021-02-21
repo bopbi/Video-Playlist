@@ -8,14 +8,17 @@ plugins {
 }
 
 kotlin {
-    android()
-    ios {
-        binaries {
-            framework {
-                baseName = "shared"
+    targets {
+        android()
+        iosArm64 {
+            binaries {
+                framework {
+                    baseName = "shared"
+                }
             }
         }
     }
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -41,7 +44,8 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(Ktor.android)
-                implementation("com.google.android.material:material:1.2.1")
+                implementation("com.google.android.material:material:1.3.0")
+                implementation(SqlDelight.android)
             }
         }
         val androidTest by getting {
@@ -50,25 +54,40 @@ kotlin {
                 implementation("junit:junit:4.13")
             }
         }
-        val iosMain by getting
-        val iosTest by getting
+        val iosArm64Main by getting {
+            dependencies {
+                implementation(Ktor.ios)
+                implementation(SqlDelight.native)
+            }
+        }
+        val iosArm64Test by getting
     }
 }
 
 android {
-    compileSdkVersion(29)
+    compileSdkVersion(30)
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
         minSdkVersion(24)
-        targetSdkVersion(29)
+        targetSdkVersion(30)
     }
 }
+
+sqldelight {
+    database("VideoPlaylistDatabase") {
+        packageName = "com.bobbyprabowo.videoplaylist.db"
+        sourceFolders = listOf("sqldelight")
+        linkSqlite = true
+    }
+}
+
 
 val packForXcode by tasks.creating(Sync::class) {
     group = "build"
     val mode = System.getenv("CONFIGURATION") ?: "DEBUG"
-    val sdkName = System.getenv("SDK_NAME") ?: "iphonesimulator"
-    val targetName = "ios" + if (sdkName.startsWith("iphoneos")) "Arm64" else "X64"
+//    val sdkName = System.getenv("SDK_NAME") ?: "iphonesimulator"
+//    val targetName = "ios" + if (sdkName.startsWith("iphoneos")) "Arm64" else "X64"
+    val targetName = "iosArm64"
     val framework = kotlin.targets.getByName<KotlinNativeTarget>(targetName).binaries.getFramework(mode)
     inputs.property("mode", mode)
     dependsOn(framework.linkTask)
