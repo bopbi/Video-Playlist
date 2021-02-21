@@ -10,10 +10,13 @@ import SwiftUI
 
 @main
 struct VideoPlaylistApp: App {
+    
+    @StateObject private var playlistViewModel = PlaylistViewModel()
 
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(playlistViewModel)
         }
     }
 }
