@@ -13,6 +13,7 @@ final class PlaylistViewModel: ObservableObject, UseCaseSuccessListener, UseCase
     
     @Published var contents: [Content] = Array()
     var fetchPlaylist: InitialFetchPlaylist?
+    var loadPlaylist: InitialLoadPlaylist?
     
     func onSuccess(tag: String, result: Any?) {
         if (result is [Content]) {
@@ -29,10 +30,12 @@ final class PlaylistViewModel: ObservableObject, UseCaseSuccessListener, UseCase
         let database = Platform.init().database
         let repository = ContentRepositoryImpl(videoApi: videoAPi, database: database)
         self.fetchPlaylist = InitialFetchPlaylistImpl(contentRepository: repository, successListener: self, failureListener: self)
+        self.loadPlaylist = InitialLoadPlaylistImpl(repository: repository, successListener: self, failureListener: self)
     }
     
-    func performFetch() {
+    func performLoadAndFetch() {
         self.fetchPlaylist?.executeCallback(processTag: "PlayListFetch")
+        self.loadPlaylist?.executeCallback(requestTag: "PlaylistLoad")
     }
     
 }

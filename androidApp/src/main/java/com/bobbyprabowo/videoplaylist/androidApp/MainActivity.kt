@@ -9,6 +9,7 @@ import com.bobbyprabowo.videoplaylist.shared.Platform
 import com.bobbyprabowo.videoplaylist.shared.datasource.remote.VideoApi
 import com.bobbyprabowo.videoplaylist.shared.repository.impl.ContentRepositoryImpl
 import com.bobbyprabowo.videoplaylist.shared.usecase.impl.InitialFetchPlaylistImpl
+import com.bobbyprabowo.videoplaylist.shared.usecase.impl.InitialLoadPlaylistImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
@@ -26,7 +27,11 @@ class MainActivity : AppCompatActivity() {
 
         val contentRepository = ContentRepositoryImpl(VideoApi, platform.database)
         val fetchPlaylist = InitialFetchPlaylistImpl(contentRepository)
+        val loadPlaylist = InitialLoadPlaylistImpl(contentRepository)
         lifecycleScope.launchWhenCreated {
+            loadPlaylist.execute().flowOn(Dispatchers.IO).collect{
+                Toast.makeText(this@MainActivity, it.toString(), Toast.LENGTH_LONG).show()
+            }
             fetchPlaylist.execute().flowOn(Dispatchers.IO).collect{
                 Toast.makeText(this@MainActivity, it.toString(), Toast.LENGTH_LONG).show()
             }

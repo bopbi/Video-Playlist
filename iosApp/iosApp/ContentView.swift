@@ -16,7 +16,7 @@ struct ContentView: View {
             }
             .navigationTitle("Video Playlist")
             .onAppear {
-                viewmodel.performFetch()
+                viewmodel.performLoadAndFetch()
             }
         }
         

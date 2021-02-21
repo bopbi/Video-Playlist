@@ -2,32 +2,33 @@ package com.bobbyprabowo.videoplaylist.shared.usecase.impl
 
 import com.bobbyprabowo.videoplaylist.shared.repository.ContentRepository
 import com.bobbyprabowo.videoplaylist.shared.schema.Content
-import com.bobbyprabowo.videoplaylist.shared.usecase.InitialFetchPlaylist
+import com.bobbyprabowo.videoplaylist.shared.usecase.InitialLoadPlaylist
 import com.bobbyprabowo.videoplaylist.shared.usecase.listener.UseCaseFailureListener
 import com.bobbyprabowo.videoplaylist.shared.usecase.listener.UseCaseSuccessListener
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
-class InitialFetchPlaylistImpl(
-    private val contentRepository: ContentRepository,
+class InitialLoadPlaylistImpl(
+    private val repository: ContentRepository,
     private val successListener: UseCaseSuccessListener<List<Content>>? = null,
     private val failureListener: UseCaseFailureListener? = null
-) : InitialFetchPlaylist {
-    @FlowPreview
+) : InitialLoadPlaylist {
     override fun execute(): Flow<List<Content>> {
-        return contentRepository.fetchPlaylist().flatMapConcat {
-            contentRepository.getPlaylist()
-        }
+        return repository.getPlaylist()
     }
 
-    @FlowPreview
-    override fun executeCallback(processTag: String) {
+    override fun executeCallback(requestTag: String) {
         execute()
-            .onEach { result ->
-                successListener?.onSuccess(processTag, result)
+            .onEach { contents ->
+                successListener?.onSuccess(requestTag, contents)
             }
             .catch { throwable ->
-                failureListener?.onError(processTag, throwable)
+                failureListener?.onError(requestTag, throwable)
             }
             .launchIn(CoroutineScope(SupervisorJob() + Dispatchers.Main))
     }
