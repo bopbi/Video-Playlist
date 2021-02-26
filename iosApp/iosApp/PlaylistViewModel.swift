@@ -24,7 +24,7 @@ final class PlaylistViewModel: ObservableObject {
     }
     
     func performLoadAndFetch() {
-        self.fetchPlaylist?.execute().collect(collector: Collector<UseCaseResult<AnyObject>> { result in
+        self.fetchPlaylist?.execute().collect(collector: Collector<UseCaseResult<NSArray>> { result in
             if (result.isSuccess() && (result.value is [Content])) {
                 self.contents = result.value as! [Content]
             } else {
@@ -34,7 +34,7 @@ final class PlaylistViewModel: ObservableObject {
             
         })
         
-        self.loadPlaylist?.execute().collect(collector: Collector<UseCaseResult<AnyObject>> { result in
+        self.loadPlaylist?.execute().collect(collector: Collector<UseCaseResult<NSArray>> { result in
             if (result.isSuccess() && (result.value is [Content])) {
                 self.contents = result.value as! [Content]
             } else {

@@ -4,8 +4,6 @@ import com.bobbyprabowo.videoplaylist.shared.repository.ContentRepository
 import com.bobbyprabowo.videoplaylist.shared.schema.Content
 import com.bobbyprabowo.videoplaylist.shared.usecase.InitialFetchPlaylist
 import com.bobbyprabowo.videoplaylist.shared.usecase.UseCaseResult
-import com.bobbyprabowo.videoplaylist.shared.usecase.listener.UseCaseFailureListener
-import com.bobbyprabowo.videoplaylist.shared.usecase.listener.UseCaseSuccessListener
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
