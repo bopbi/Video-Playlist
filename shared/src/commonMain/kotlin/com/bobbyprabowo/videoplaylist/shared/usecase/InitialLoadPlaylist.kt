@@ -5,7 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface InitialLoadPlaylist {
 
-    fun execute(): Flow<List<Content>>
-
-    fun executeCallback(requestTag: String)
+    fun execute(): Flow<UseCaseResult<List<Content>>>
 }

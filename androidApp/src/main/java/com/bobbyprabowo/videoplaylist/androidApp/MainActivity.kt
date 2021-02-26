@@ -29,11 +29,19 @@ class MainActivity : AppCompatActivity() {
         val fetchPlaylist = InitialFetchPlaylistImpl(contentRepository)
         val loadPlaylist = InitialLoadPlaylistImpl(contentRepository)
         lifecycleScope.launchWhenCreated {
-            loadPlaylist.execute().flowOn(Dispatchers.IO).collect{
-                Toast.makeText(this@MainActivity, it.toString(), Toast.LENGTH_LONG).show()
+            loadPlaylist.execute().flowOn(Dispatchers.IO).collect{ result ->
+                if (result.isSuccess()) {
+                    result.value?.let {
+                        Toast.makeText(this@MainActivity, it.toString(), Toast.LENGTH_LONG).show()
+                    }
+                }
             }
-            fetchPlaylist.execute().flowOn(Dispatchers.IO).collect{
-                Toast.makeText(this@MainActivity, it.toString(), Toast.LENGTH_LONG).show()
+            fetchPlaylist.execute().flowOn(Dispatchers.IO).collect{ result ->
+                if (result.isSuccess()) {
+                    result.value?.let {
+                        Toast.makeText(this@MainActivity, it.toString(), Toast.LENGTH_LONG).show()
+                    }
+                }
             }
         }
     }

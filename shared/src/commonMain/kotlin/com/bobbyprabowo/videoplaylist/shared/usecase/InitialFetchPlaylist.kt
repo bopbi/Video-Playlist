@@ -7,7 +7,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface InitialFetchPlaylist {
 
-    fun execute(): Flow<List<Content>>
-
-    fun executeCallback(processTag: String)
+    fun execute(): Flow<UseCaseResult<List<Content>>>
 }

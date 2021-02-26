@@ -3,32 +3,23 @@ package com.bobbyprabowo.videoplaylist.shared.usecase.impl
 import com.bobbyprabowo.videoplaylist.shared.repository.ContentRepository
 import com.bobbyprabowo.videoplaylist.shared.schema.Content
 import com.bobbyprabowo.videoplaylist.shared.usecase.InitialFetchPlaylist
+import com.bobbyprabowo.videoplaylist.shared.usecase.UseCaseResult
 import com.bobbyprabowo.videoplaylist.shared.usecase.listener.UseCaseFailureListener
 import com.bobbyprabowo.videoplaylist.shared.usecase.listener.UseCaseSuccessListener
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
 class InitialFetchPlaylistImpl(
-    private val contentRepository: ContentRepository,
-    private val successListener: UseCaseSuccessListener<List<Content>>? = null,
-    private val failureListener: UseCaseFailureListener? = null
+    private val contentRepository: ContentRepository
 ) : InitialFetchPlaylist {
     @FlowPreview
-    override fun execute(): Flow<List<Content>> {
+    override fun execute(): Flow<UseCaseResult<List<Content>>> {
         return contentRepository.fetchPlaylist().flatMapConcat {
             contentRepository.getPlaylist()
+        }.map { playlist ->
+            UseCaseResult.Success(playlist)
+        }.catch { error ->
+            UseCaseResult.Fail<List<Content>>(error)
         }
-    }
-
-    @FlowPreview
-    override fun executeCallback(processTag: String) {
-        execute()
-            .onEach { result ->
-                successListener?.onSuccess(processTag, result)
-            }
-            .catch { throwable ->
-                failureListener?.onError(processTag, throwable)
-            }
-            .launchIn(CoroutineScope(SupervisorJob() + Dispatchers.Main))
     }
 }

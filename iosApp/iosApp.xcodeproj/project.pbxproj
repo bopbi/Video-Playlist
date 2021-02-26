@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0005F5DB25E952C400340485 /* Collector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0005F5DA25E952C400340485 /* Collector.swift */; };
 		0042C5DB25E285A600998F84 /* VideoPlaylistApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0042C5DA25E285A600998F84 /* VideoPlaylistApp.swift */; };
 		0042C5EF25E2893600998F84 /* PlaylistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0042C5EE25E2893600998F84 /* PlaylistViewModel.swift */; };
 		0042C5F625E28F4400998F84 /* ContentRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0042C5F525E28F4400998F84 /* ContentRowView.swift */; };
@@ -53,6 +54,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0005F5DA25E952C400340485 /* Collector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collector.swift; sourceTree = "<group>"; };
 		0042C5DA25E285A600998F84 /* VideoPlaylistApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlaylistApp.swift; sourceTree = "<group>"; };
 		0042C5EE25E2893600998F84 /* PlaylistViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistViewModel.swift; sourceTree = "<group>"; };
 		0042C5F525E28F4400998F84 /* ContentRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentRowView.swift; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 				0042C5EE25E2893600998F84 /* PlaylistViewModel.swift */,
 				0042C5F525E28F4400998F84 /* ContentRowView.swift */,
 				0042C5FE25E296B100998F84 /* ContentDetailView.swift */,
+				0005F5DA25E952C400340485 /* Collector.swift */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -329,6 +332,7 @@
 				0042C5FF25E296B100998F84 /* ContentDetailView.swift in Sources */,
 				0042C5EF25E2893600998F84 /* PlaylistViewModel.swift in Sources */,
 				0042C5F625E28F4400998F84 /* ContentRowView.swift in Sources */,
+				0005F5DB25E952C400340485 /* Collector.swift in Sources */,
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
 				0042C5DB25E285A600998F84 /* VideoPlaylistApp.swift in Sources */,
 			);

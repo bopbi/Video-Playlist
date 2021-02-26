@@ -9,33 +9,40 @@
 import Foundation
 import shared
 
-final class PlaylistViewModel: ObservableObject, UseCaseSuccessListener, UseCaseFailureListener {
+final class PlaylistViewModel: ObservableObject {
     
     @Published var contents: [Content] = Array()
     var fetchPlaylist: InitialFetchPlaylist?
     var loadPlaylist: InitialLoadPlaylist?
     
-    func onSuccess(tag: String, result: Any?) {
-        if (result is [Content]) {
-            self.contents = result as! [Content]
-        }
-    }
-    
-    func onError(tag: String, throwable: KotlinThrowable) {
-        
-    }
-    
     init() {
         let videoAPi = VideoApi()
         let database = Platform.init().database
         let repository = ContentRepositoryImpl(videoApi: videoAPi, database: database)
-        self.fetchPlaylist = InitialFetchPlaylistImpl(contentRepository: repository, successListener: self, failureListener: self)
-        self.loadPlaylist = InitialLoadPlaylistImpl(repository: repository, successListener: self, failureListener: self)
+        self.fetchPlaylist = InitialFetchPlaylistImpl(contentRepository: repository)
+        self.loadPlaylist = InitialLoadPlaylistImpl(repository: repository)
     }
     
     func performLoadAndFetch() {
-        self.fetchPlaylist?.executeCallback(processTag: "PlayListFetch")
-        self.loadPlaylist?.executeCallback(requestTag: "PlaylistLoad")
+        self.fetchPlaylist?.execute().collect(collector: Collector<UseCaseResult<AnyObject>> { result in
+            if (result.isSuccess() && (result.value is [Content])) {
+                self.contents = result.value as! [Content]
+            } else {
+                
+            }
+        }, completionHandler: { (unit, error) in
+            
+        })
+        
+        self.loadPlaylist?.execute().collect(collector: Collector<UseCaseResult<AnyObject>> { result in
+            if (result.isSuccess() && (result.value is [Content])) {
+                self.contents = result.value as! [Content]
+            } else {
+                
+            }
+        }, completionHandler: { (unit, error) in
+            
+        })
     }
     
 }
