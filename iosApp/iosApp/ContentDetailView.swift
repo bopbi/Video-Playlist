@@ -16,7 +16,9 @@ struct ContentDetailView: View {
     
     var body: some View {
         NavigationView {
-            VideoPlayer(player: AVPlayer(url:  URL(string: content.videoUrl)!))
+            VStack {
+                VideoPlayer(player: AVPlayer(url:  URL(string: content.videoUrl)!))
+            }
                 .navigationTitle(content.title)
         }
     }
